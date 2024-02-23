@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'yt-sidebar' title`, () => {
+  it(`should have the 'DevID' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('yt-sidebar');
+    expect(app.title).toEqual('DevID');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, yt-sidebar');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, DevID');
   });
 });

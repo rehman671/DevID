@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "yt-sidebar": {
+    "DevID": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -18,7 +18,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/yt-sidebar",
+            "outputPath": "dist/DevID",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -30,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/styles.css"
             ],
             "scripts": []
@@ -62,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "yt-sidebar:build:production"
+              "buildTarget": "DevID:build:production"
             },
             "development": {
-              "buildTarget": "yt-sidebar:build:development"
+              "buildTarget": "DevID:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "yt-sidebar:build"
+            "buildTarget": "DevID:build"
           }
         },
         "test": {
@@ -96,5 +97,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
