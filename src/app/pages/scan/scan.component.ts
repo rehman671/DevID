@@ -1,22 +1,15 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { ScanDataComponent } from "../../api/scan-data/scan-data.component";
+import { AdvanceScanComponent } from "../../api/advance-scan/advance-scan.component";
 
 @Component({
-  selector: 'app-scan',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-  ],
-
-  template: `
+    selector: 'app-scan',
+    standalone: true,
+    template: `
     <h1>Scan</h1>
     <div class="main-section">
       <div class="operational-buttons">
@@ -77,26 +70,35 @@ import { CommonModule } from '@angular/common';
       >
       <div class="input-button-container" *ngIf='otherNmapOptions()'>
         <input
-          type="text"
-          placeholder="Enter IP for further scanning"
-          class="input-field"
+        type="text"
+        placeholder="Enter IP for further scanning"
+        class="input-field"
           style="height:50px;width:400px;background-color:#F5F5F5;border:1px solid #F5F5F5;margin:100px"
         />
         <button mat-raised-button color="primary">Submit</button>
       </div>
       <div class="nmap-content">
-          <div class="nmap-output" [class.background-dim]="progress_spiral()">
-            <p>Scan output will be displayed here.</p>
+        <app-scan-data style="margin: auto;"  *ngIf="normalScanApi()"></app-scan-data>
+        <app-advance-scan style="margin: auto;" *ngIf="advanceScanApi()"></app-advance-scan>
+        <div *ngIf="!anyapi()" class="nmap-output">
+            <p  >Scan output will be displayed here.</p>
           </div>
-          <mat-spinner *ngIf="progress_spiral()" class="spinner"></mat-spinner>
           <div class="nmap-scan-btns">
             <button
               mat-raised-button
               color="primary"
               style="width: 150px;"
-              (click)="runScript(); showSpiral()"
+              (click)="normalScan();"
             >
               Normal Scan
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              style="width: 150px;"
+              (click)=" advanceScan();"
+            >
+              Advance Scan
             </button>
           </div>
         </div>
@@ -127,7 +129,7 @@ import { CommonModule } from '@angular/common';
       </div>
     </div>
   `,
-  styles: `
+    styles: `
   button{
     margin:2px;
     width:200px;
@@ -181,11 +183,14 @@ import { CommonModule } from '@angular/common';
 }
 .nmap-output{
   background-color:#F5F5F5;
-  width:100%;
+  width:70%;
   padding:2%;
   height:80%;
   margin:auto;
   border-radius:2%;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
   border:1px solid #DEDEDE;
 }
 
@@ -200,7 +205,9 @@ import { CommonModule } from '@angular/common';
 }
 .nmap-scan-btns{
   height:80%;
-  margin:2%;
+  margin-right:5%;
+  display:flex;
+  flex-direction:column;
 
   >button{
     width:250px;
@@ -256,13 +263,15 @@ textarea {
   background-color: rgba(0, 0, 0, 0.2)
 }
 
-.spinner {
-  position: absolute;
-  right: 50%; /* Position spinner to the right */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust vertical position */
-}
   `,
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ScanDataComponent,
+        AdvanceScanComponent
+    ]
 })
 export class ScanComponent {
   showManual = signal(false);
@@ -270,16 +279,25 @@ export class ScanComponent {
   showModel = signal(false);
   progress_spiral = signal(false);
   otherNmapOptions = signal(false);
+  nmapScanData:any;
+  normalScanApi = signal(false)
+  advanceScanApi = signal(false)
+  anyapi = computed(() => {
+    if (this.normalScanApi() || this.advanceScanApi()) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
-  showSpiral() {
-    this.progress_spiral.set(true);
-    setTimeout(() => {
-      this.progress_spiral.set(false);
-      this.otherNmapOptions.set(true);
-    }, 5000); //
+  normalScan(){
+    this.normalScanApi.set(true)
+    this.advanceScanApi.set(false)
   }
-  runScript() {
-    console.log('DOing Nothing');
+  
+  advanceScan(){
+    this.normalScanApi.set(false)
+    this.advanceScanApi.set(true)
   }
 
   toggleVisibility(state: any) {
@@ -300,4 +318,17 @@ export class ScanComponent {
       this.otherNmapOptions.set(false);
     }
   }
+
+
+  // constructor(private scanData:NmapScanDataService){
+
+  //   scanData.getScans().subscribe((data)=>{
+  //     console.log(data)
+  //     this.nmapScanData = data
+  //   })
+  // }
+  // ngOnInit(): void {
+      
+  // }
+
 }

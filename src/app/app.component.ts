@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { CustomSidenavComponent } from './components/custom-sidenav/custom-sidenav.component';
 
-
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -17,6 +16,9 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
     <button mat-icon-button (click)="collapsed.set(!collapsed())">
             <mat-icon>menu</mat-icon>
     </button>
+    <div class="user-detail">
+    <img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="">
+    </div>
   </mat-toolbar>
   <mat-sidenav-container>
     <mat-sidenav opened mode="side" [style.width]="sideNavWidth()"> 
@@ -33,8 +35,37 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
     mat-toolbar {
       position:relative;
       z-index:5;
+      display:flex;
+      flex-direction:row;
+      justify-content:space-between;
     }
 
+    .user-detail{
+      background-color:white;
+      border:1px solid grey;
+      width:40px;
+      height:40px;
+      border-radius:100%;
+      transition:all 0.3s ease-in-out;
+      overflow:hidden;
+      
+      >img{
+        width:100%;
+        height:100%;
+        transition:all 0.3s ease-in-out;
+
+      }
+    }
+
+    .user-detail:hover{
+      background-color:grey;
+      border:1px solid black;
+      width:45px;
+      height:45px;
+      >img{
+        filter: invert(1);
+      }
+    }
     .content{
       padding:24px
     }
