@@ -17,7 +17,7 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
     <button mat-icon-button (click)="collapsed.set(!collapsed())">
             <mat-icon>menu</mat-icon>
     </button>
-    <div class="user-detail">
+    <div class="user-detail" (click)="Logout()">
     <img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="">
     </div>
   </mat-toolbar>
@@ -47,6 +47,7 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
       width:40px;
       height:40px;
       border-radius:100%;
+      cursor:pointer;
       transition:all 0.3s ease-in-out;
       overflow:hidden;
       
@@ -86,8 +87,14 @@ export class AppComponent {
   collapsed = signal(false);
   constructor(private router: Router) { }
   isLoginPage(): boolean {
-    return (this.router.url === '/login');
+    return this.router.url.includes('/login');
+
   }
-  sideNavWidth = computed(() =>  this.collapsed() ? '65px' : '250px');
+  sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
+
+Logout(){
+  localStorage.removeItem('accessToken')
+  this.router.navigate(['/login']);
+}
 
 }

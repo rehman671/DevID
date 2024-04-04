@@ -1,27 +1,33 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Import FormsModule here
+
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule ],
   template: `
-  <div class="login-container">
-  <div class="login-card">
-    <img src="assets/logo.png" alt="Logo" class="logo">
-    <h2 class="login-heading">Login</h2>
-    <form class="login-form">
-      <div class="form-group">
-        <input type="email" id="email" name="email" placeholder="Email">
-      </div>
-      <div class="form-group">
-        <input type="password" id="password" name="password" placeholder="Password">
-      </div>
-      <div class="form-group">
-        <button type="submit" class="btn-login">Login</button>
-      </div>
-    </form>
+ <div class="login-container">
+    <div class="login-card">
+      <img src="assets/logo.png" alt="Logo" class="logo">
+      <h2 class="login-heading">Login</h2>
+      <form class="login-form" (submit)="login()">
+        <div class="form-group">
+          <input type="email" id="email" name="email" placeholder="Email" [(ngModel)]="email">
+        </div>
+        <div class="form-group">
+          <input type="password" id="password" name="password" placeholder="Password" [(ngModel)]="password">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn-login">Login</button>
+        </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </form>
+    </div>
   </div>
-</div>
 
 
   `,
@@ -101,8 +107,32 @@ import { Component } from '@angular/core';
   background-color: #0056b3;
 }
 
+.error-message {
+    color: red;
+    margin-top: 10px;
+  }
   `
 })
 export class LoginComponent {
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
+  constructor(private router: Router) {}
+
+  login() {
+    // Hardcoded credentials
+    const hardcodedEmail = 'admin@devid.com';
+    const hardcodedPassword = 'admin';
+
+    // Check if email and password match the hardcoded values
+    if (this.email === hardcodedEmail && this.password === hardcodedPassword) {
+      localStorage.setItem('accessToken', 'TestingToken');
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.errorMessage = 'Invalid email or password. Please try again.';
+      this.email = '';
+      this.password = '';
+    }
+  }
 }
