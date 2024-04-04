@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from "@angular/material/toolbar"
 import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
@@ -12,7 +12,8 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
   standalone: true,
   imports: [CommonModule, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, CustomSidenavComponent],
   template: `
-  <mat-toolbar class="mat-elevation-z3">
+    <router-outlet  *ngIf="isLoginPage()" ></router-outlet>
+  <mat-toolbar  *ngIf="!isLoginPage()" class="mat-elevation-z3">
     <button mat-icon-button (click)="collapsed.set(!collapsed())">
             <mat-icon>menu</mat-icon>
     </button>
@@ -20,13 +21,13 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
     <img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="">
     </div>
   </mat-toolbar>
-  <mat-sidenav-container>
-    <mat-sidenav opened mode="side" [style.width]="sideNavWidth()"> 
-    <app-custom-sidenav [collapsed]="collapsed()"></app-custom-sidenav>
+  <mat-sidenav-container *ngIf="!isLoginPage()">
+    <mat-sidenav  opened mode="side" [style.width]="sideNavWidth()"> 
+      <app-custom-sidenav [collapsed]="collapsed()"></app-custom-sidenav>
     </mat-sidenav>
     <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
-      <router-outlet></router-outlet>
-  </mat-sidenav-content>
+      <router-outlet  *ngIf="!isLoginPage()"></router-outlet>
+    </mat-sidenav-content>
   </mat-sidenav-container>
  ` ,
   styles: [
@@ -83,5 +84,10 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
 export class AppComponent {
   title = 'DevID';
   collapsed = signal(false);
-  sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
+  constructor(private router: Router) { }
+  isLoginPage(): boolean {
+    return (this.router.url === '/login');
+  }
+  sideNavWidth = computed(() =>  this.collapsed() ? '65px' : '250px');
+
 }

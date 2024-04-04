@@ -143,7 +143,6 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     flex-direction:row;
     margin:2%;
 
-
     >app-piechart{
       color:white;
       width:49%;
