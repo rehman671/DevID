@@ -29,7 +29,7 @@ import { AdvanceScanComponent } from "../../api/advance-scan/advance-scan.compon
         >
           Nmap
         </button>
-        <button
+        <!-- <button
           *ngIf="showModel()"
           mat-raised-button
           color="primary"
@@ -44,7 +44,7 @@ import { AdvanceScanComponent } from "../../api/advance-scan/advance-scan.compon
           (click)="toggleVisibility(showModel)"
         >
           ML Model
-        </button>
+        </button> -->
         <button
           *ngIf="showManual()"
           mat-raised-button

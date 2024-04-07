@@ -6,6 +6,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ScanComponent } from './pages/scan/scan.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './auth.guard';
+import { MlModelComponent } from './pages/ml-model/ml-model.component';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,11 @@ export const routes: Routes = [
   {
     path: 'scan',
     component: ScanComponent,
+    canActivate: [AuthGuard] // Protect scan route with AuthGuard
+  },
+  {
+    path: 'ml',
+    component: MlModelComponent,
     canActivate: [AuthGuard] // Protect scan route with AuthGuard
   },
   {

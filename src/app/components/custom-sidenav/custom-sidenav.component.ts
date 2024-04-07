@@ -85,10 +85,16 @@ export class CustomSidenavComponent {
       route: 'dashboard'
     },
     {
-      icon: 'computer',
+      icon: 'network_wifi',
       label: 'Scan',
       route: 'scan'
-    }
+    },
+    {
+      icon: 'dvr',
+      label: 'Machine Learning',
+      route: 'ml'
+    },
+    
   ])
 
   logoSize = computed(() => this.sideNavCollapsed() ? '32' : '100')
