@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { environment } from '../../enviroments/environment';
 
 
 @Component({
@@ -44,7 +45,7 @@ styles: `
   `
 })
 export class ScanDataComponent implements OnInit{
-  url = 'http://192.168.1.106:8000/scan/normal/'
+  url = environment.apiUrl + 'api/v1/scan/normal/'
   http = inject(HttpClient)
   gotData = signal(false)
   scanData: any = [];

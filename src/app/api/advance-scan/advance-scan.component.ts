@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { environment } from '../../enviroments/environment';
 
 @Component({
   selector: 'app-advance-scan',
@@ -51,7 +52,7 @@ td , th{
   `
 })
 export class AdvanceScanComponent implements OnInit {
-  url = 'http://192.168.1.106:8000/scan/advance/' // Should be changed according to your server
+  url = environment.apiUrl + 'api/v1/scan/advance/' // Should be changed according to your server
   http = inject(HttpClient)
   scanData: any = [];
   gotData = signal(false)

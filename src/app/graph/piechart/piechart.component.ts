@@ -36,7 +36,7 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
   `
 })
 export class PieChartComponent implements OnInit {
-  url = environment.apiUrl + '/api/v1/dashboard/piechart/';
+  url = environment.apiUrl + 'api/v1/dashboard/piechart/';
   dataPoints: any = [];
   chartOptions: any;
   chart: any;
