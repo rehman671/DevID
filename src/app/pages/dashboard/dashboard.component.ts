@@ -26,7 +26,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
       </h1>
     </div>
     <div class="other-btns-container">
-      <button mat-stroked-button color="primary">Save Changes</button>
+      <button mat-stroked-button color="primary">Apply</button>
       <mat-form-field class="date-filter">
         <mat-label>Add date filter</mat-label>
         <input matInput [matDatepicker]="picker">
@@ -38,7 +38,9 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     </div>
   </div>
   <div class="mid-section">
-    <app-piechart></app-piechart>
+    <div class="piechart">
+      <app-piechart></app-piechart>
+    </div>
     <div class="current-profile">
         <table>
           <thead>
@@ -140,13 +142,20 @@ import { provideNativeDateAdapter } from '@angular/material/core';
   .mid-section{
     display:flex;
     width:100%;
+    height:60%;
     flex-direction:row;
     margin:2%;
 
-    >app-piechart{
-      color:white;
+    >.piechart{
       width:49%;
+
+      >app-piechart{
+        color:white;
+        width:100%;
+
+      }
     }
+
 
     >.current-profile{
       width:49%;
