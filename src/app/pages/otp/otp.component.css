@@ -1,0 +1,139 @@
+.otp-field {
+  flex-direction: row;
+  column-gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.otp-field input {
+  height: 45px;
+  width: 42px;
+  border-radius: 6px;
+  outline: none;
+  font-size: 1.125rem;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.otp-field input:focus {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.otp-field input::-webkit-inner-spin-button,
+.otp-field input::-webkit-outer-spin-button {
+  display: none;
+}
+
+.valid-otp input {
+  border-color: green;
+}
+
+.invalid-otp input {
+  border-color: red;
+}
+
+.resend {
+  font-size: 12px;
+}
+
+.otp-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.otp-card {
+  max-width: 400px;
+  width: 100%;
+  padding: 40px;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.otp-card:hover {
+  transform: translateY(-5px);
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+  transition: transform 0.3s;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.otp-heading {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.otp-form .form-group {
+  margin-bottom: 20px;
+}
+
+.otp-form input[type="email"],
+.otp-form input[type="password"] {
+  width: 90%;
+  padding: 15px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.otp-form input[type="email"]:focus,
+.otp-form input[type="password"]:focus {
+  border-color: #008080;
+}
+
+.btn-otp {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  background-color: teal;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+.btn-resent {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  background: #66b2b2;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-resent:hover {
+  background: #4e7e7e;
+}
+
+
+.btn-otp:hover {
+  background-color: rgb(2, 83, 83);
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.timer {
+  margin-top: 20px;
+  font-size: 14px;
+}

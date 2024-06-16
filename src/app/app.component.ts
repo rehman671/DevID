@@ -6,11 +6,15 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { CustomSidenavComponent } from './components/custom-sidenav/custom-sidenav.component';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ToastrModule } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, CustomSidenavComponent],
+  imports: [CommonModule, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, CustomSidenavComponent,ToastrModule],
   template: `
     <router-outlet  *ngIf="isLoginPage()" ></router-outlet>
   <mat-toolbar  *ngIf="!isLoginPage()" class="mat-elevation-z3">
@@ -85,10 +89,10 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
 export class AppComponent {
   title = 'DevID';
   collapsed = signal(false);
+
   constructor(private router: Router) { }
   isLoginPage(): boolean {
-    return this.router.url.includes('/login');
-
+    return this.router.url.includes('/login') || this.router.url.includes('/otp');
   }
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
 

@@ -1,0 +1,24 @@
+<div class="otp-container">
+    <div class="otp-card">
+      <img src="assets/logo.png" alt="Logo" class="logo" />
+      <h2 class="otp-heading">OTP Verification</h2>
+      <form class="otp-form" (submit)="submitOTP($event)">
+        <ng-otp-input
+          [formCtrl]="otpFormControl"
+          [config]="{ length: 6 }"
+          (onInputChange)="onOtpChange($event)"
+          [ngClass]="{ 'valid-otp': otpValid, 'invalid-otp': otpInvalid }"
+        ></ng-otp-input>
+      </form>
+      <div class="form-group" *ngIf="timeLeft !== 0">
+        <button type="submit" class="btn-otp" (click)="submitOTP($event)">Verify</button>
+      </div>
+      <div class="resend" *ngIf="timeLeft === 0">
+        <div class="form-group" *ngIf="timeLeft === 0">
+          <button type="submit" class="btn-resent" (click)="resendOtp()">Resend</button>
+        </div>
+      </div>
+      <div class="timer">Time left: {{ minutes }}:{{ seconds | number: '2.0' }}</div>
+    </div>
+  </div>
+  
