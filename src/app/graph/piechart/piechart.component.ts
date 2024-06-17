@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient , HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { environment } from '../../enviroments/environment';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -50,7 +50,11 @@ export class PieChartComponent implements OnInit {
   }
 
   fetchDatapoints() {
-    this.http.get(this.url).subscribe((scanData: any) => {
+    const token = localStorage.getItem('accessToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    this.http.get(this.url , {headers}).subscribe((scanData: any) => {
       console.log(scanData.datapoints);
       this.dataPoints = scanData.datapoints;
       this.gotData.set(true)

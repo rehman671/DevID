@@ -9,6 +9,7 @@ import { CustomSidenavComponent } from './components/custom-sidenav/custom-siden
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
+import { TokenService } from './services/token.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { ToastrModule } from 'ngx-toastr';
     <button mat-icon-button (click)="collapsed.set(!collapsed())">
             <mat-icon>menu</mat-icon>
     </button>
-    <div class="user-detail" (click)="Logout()">
+    <div class="user-detail" (click)="logout()">
     <img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="">
     </div>
   </mat-toolbar>
@@ -90,15 +91,26 @@ export class AppComponent {
   title = 'DevID';
   collapsed = signal(false);
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private tokenService: TokenService) { 
+    // Ensure the token service starts token refresh process
+  }
+
   isLoginPage(): boolean {
     return this.router.url.includes('/login') || this.router.url.includes('/otp');
   }
+
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
 
-Logout(){
-  localStorage.removeItem('accessToken')
-  this.router.navigate(['/login']);
-}
 
+  logout() {
+    this.tokenService.clearToken().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Error during logout', err);
+        this.router.navigate(['/login']);  // Navigate to login even if there's an error
+      }
+    });
+  }
 }

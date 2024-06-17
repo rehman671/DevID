@@ -55,7 +55,7 @@ export class OtpComponent implements OnInit {
   submitOTP(event: Event) {
     const enteredOtp = this.otpFormControl.value;
     const payload = {
-      "email": localStorage.getItem('email'),
+      "email": localStorage.getItem('devid_email'),
       "otp": enteredOtp
     }
     this.http.post(this.url, payload).subscribe({
@@ -64,6 +64,7 @@ export class OtpComponent implements OnInit {
         const refresh_token = loginResponse.response.refresh_token
         localStorage.setItem('accessToken' , access_token)
         localStorage.setItem('refreshToken' , refresh_token)
+        localStorage.removeItem('devid_email')
         this.otpValid = true;
         this.otpInvalid = false;
         this.toastr.success('OTP verified successfully!', '', {
@@ -85,25 +86,6 @@ export class OtpComponent implements OnInit {
        
       }
     });
-    
-    // if (enteredOtp === '123456') {
-    //   this.otpValid = true;
-    //   this.otpInvalid = false;
-    //   this.toastr.success('OTP verified successfully!', '', {
-    //     "progressBar": true,
-    //     "progressAnimation": "increasing",
-    //     "timeOut": 2500,
-    //   });
-    //   this.router.navigate(['/dashboard']);
-    // } else {
-    //   this.otpValid = false;
-    //   this.otpInvalid = true;
-    //   this.toastr.error('Invalid OTP, please try again.', '', {
-    //     "progressBar": true,
-    //     "progressAnimation": "increasing",
-    //     "timeOut": 2500,
-    //   });
-    // }
   }
 
   resendOtp() {

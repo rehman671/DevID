@@ -112,7 +112,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
         margin-bottom:4%;
       }
       >.date-filter{
-        // height:80%;
+        /*height:80%; */
         font-size:15px
       }
     }

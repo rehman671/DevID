@@ -13,7 +13,14 @@
         />
       </div>
       <div class="form-group">
-        <button type="submit" class="btn-login">Login</button>
+        <button type="submit" class="btn-login" [disabled]="login_btn_signal()">
+          <ng-container *ngIf="!login_btn_signal(); else spinner">
+            Login
+          </ng-container>
+          <ng-template class="spinner" #spinner>
+            <mat-spinner color="white" style="zoom:0.3" class="spinner"></mat-spinner>
+          </ng-template>
+        </button>
       </div>
       <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     </form>

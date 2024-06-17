@@ -1,15 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../enviroments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule , MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -18,6 +19,7 @@ export class LoginComponent {
   email: string = '';
   http = inject(HttpClient)
   toastr = inject(ToastrService)
+  login_btn_signal = signal(false);
   errorMessage: string = '';
   constructor(private router: Router , toastr: ToastrService) {}
   clearToasts() {
@@ -52,11 +54,15 @@ export class LoginComponent {
     });
   }
 
-
+  login_btn_state(disable:boolean){
+    this.login_btn_signal.set(disable)
+  }
   // Login Logic
   login(email:string) {
+    this.login_btn_state(true)
     if (email == ''){
       this.showWarning("Email can't be empty")
+      this.login_btn_state(false)
       return
     }
     const payload = {
@@ -64,12 +70,14 @@ export class LoginComponent {
     }
     this.http.post(this.url, payload).subscribe({
       next: (loginResponse: any) => {
-        localStorage.setItem('email',email)
+        localStorage.setItem('devid_email',email)
+        this.login_btn_state(false)
         this.showSuccess()
         this.router.navigate(['/otp'])
       },
       error: (error: any) => {
         this.showError(error.error.email[0])
+        this.login_btn_state(false)
         this.email = ''
       }
     });

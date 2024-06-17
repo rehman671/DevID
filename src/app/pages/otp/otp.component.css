@@ -137,3 +137,11 @@
   margin-top: 20px;
   font-size: 14px;
 }
+
+.valid-otp{
+  border-color: green;
+}
+
+.invalid-otp{
+  border-color: red;
+}
