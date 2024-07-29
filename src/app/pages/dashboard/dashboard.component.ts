@@ -48,7 +48,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         <table *ngIf="gotData()">
           <thead>
             <tr>
-              <th colspan="2">Current Device</th>
+              <th colspan="2">Host Device</th>
             </tr>
           </thead>
           <tbody>
@@ -61,12 +61,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
               <td>{{ deviceInfo.subnet }}</td>
             </tr>
             <tr>
-              <td>Kernal Name</td>
-              <td>{{ deviceInfo.kernel_name }}</td>
-            </tr>
-            <tr>
               <td>Device OS</td>
               <td>{{ deviceInfo.operating_system }}</td>
+            </tr>
+            <tr>
+              <td>Kernal Name</td>
+              <td>{{ deviceInfo.kernel_name }}</td>
             </tr>
           </tbody>
         </table>

@@ -260,21 +260,21 @@ textarea {
   display: inline-block;
 }
 .tooltip .tooltiptext {
-  visibility: hidden;
+  opacity: 0;
   width: 120px;
   background-color: grey;
   color: #fff;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
-
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
+  transition:all 0.5s ease;
 }
 
 .tooltip:hover .tooltiptext {
-  visibility: visible;
+  opacity: 1;
 }
 
 .add-device-form{
