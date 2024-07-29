@@ -3,12 +3,13 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { environment } from '../../enviroments/environment';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
   selector: 'app-scan-data',
   standalone: true,
-  imports: [CommonModule , MatProgressSpinnerModule],
+  imports: [CommonModule , MatProgressSpinnerModule , MatButtonModule],
   template: `
   <div class="main">
 
@@ -26,6 +27,13 @@ import { environment } from '../../enviroments/environment';
       <td>{{ row.ip }}</td>
       <td>{{ row.mac }}</td>
       <td>{{ row.name }}</td>
+      <td><button
+      mat-raised-button
+      color="primary"
+
+      >
+        Add
+      </button></td>
     </tr>
   </tbody>
 </table>
@@ -39,8 +47,8 @@ styles: `
 }
 
   td , th{
-    padding:15px;
-    border:2px solid grey;
+    padding:25px;
+    border:2px solid #e7e7e7;
   }
   `
 })

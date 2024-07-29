@@ -2,134 +2,115 @@ import { Component, OnInit, computed, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ScanDataComponent } from "../../api/scan-data/scan-data.component";
-import { AdvanceScanComponent } from "../../api/advance-scan/advance-scan.component";
+import { ScanDataComponent } from '../../api/scan-data/scan-data.component';
+import { AdvanceScanComponent } from '../../api/advance-scan/advance-scan.component';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 
 @Component({
-    selector: 'app-scan',
-    standalone: true,
-    template: `
+  selector: 'app-scan',
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    CommonModule,
+    ScanDataComponent,
+    AdvanceScanComponent,
+  ],
+  template: `
     <h1>Scan</h1>
     <div class="main-section">
       <div class="operational-buttons">
-        <button
-          *ngIf="showNmap()"
-          mat-raised-button
-          color="primary"
-          (click)="toggleVisibility(showNmap)"
-        >
-          Nmap
+        <button mat-raised-button color="primary" (click)="normalScan()">
+          Basic Scan
         </button>
-        <button
-          *ngIf="!showNmap()"
-          mat-stroked-button
-          color="primary"
-          (click)="toggleVisibility(showNmap)"
-        >
-          Nmap
+        <button mat-raised-button color="primary" (click)="advanceScan()">
+          Advance Scan
         </button>
-        <!-- <button
-          *ngIf="showModel()"
-          mat-raised-button
-          color="primary"
-          (click)="toggleVisibility(showModel)"
-        >
-          ML Model
-        </button>
-        <button
-          *ngIf="!showModel()"
-          mat-stroked-button
-          color="primary"
-          (click)="toggleVisibility(showModel)"
-        >
-          ML Model
-        </button> -->
-        <button
-          *ngIf="showManual()"
-          mat-raised-button
-          color="primary"
-          (click)="toggleVisibility(showManual)"
-        >
-          Manual
-        </button>
-        <button
-          *ngIf="!showManual()"
-          mat-stroked-button
-          color="primary"
-          (click)="toggleVisibility(showManual)"
-        >
-          Manual
-        </button>
-      </div>
-
-      <div
-      *ngIf="showNmap()"
-      class="nmap-whole"
-      [class.background-dim]="progress_spiral()"
-      >
-      <div class="input-button-container" *ngIf='otherNmapOptions()'>
-        <input
-        type="text"
-        placeholder="Enter IP for further scanning"
-        class="input-field"
-          style="height:50px;width:400px;background-color:#F5F5F5;border:1px solid #F5F5F5;margin:100px"
-        />
-        <button mat-raised-button color="primary">Submit</button>
+        <div class="tooltip">
+          <button (click)="toggleForm()" class="add-device-btn tooltip">
+            <span class="material-symbols-outlined "> add </span>
+          </button>
+          <span class="tooltiptext">Add Manual</span>
+        </div>
       </div>
       <div class="nmap-content">
-        <app-scan-data style="margin: auto;"  *ngIf="normalScanApi()"></app-scan-data>
-        <app-advance-scan style="margin: auto;" *ngIf="advanceScanApi()"></app-advance-scan>
-        <div *ngIf="!anyapi()" class="nmap-output">
-            <p  >Scan output will be displayed here.</p>
+        <app-scan-data
+          style="margin: auto;"
+          *ngIf="normalScanApi()"
+        ></app-scan-data>
+        <app-advance-scan
+          style="margin: auto;"
+          *ngIf="advanceScanApi()"
+        ></app-advance-scan>
+        <div *ngIf="showForm" class="add-device-form">
+          <div class="form-fields">
+              <div class="left-fields">
+                <mat-form-field>
+                  <mat-label>Device IP</mat-label>
+                  <input matInput placeholder="192.168.0.0" required />
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Device Name</mat-label>
+                  <input matInput placeholder="" required/>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>OsCpe</mat-label>
+                  <input matInput placeholder=""  />
+                </mat-form-field>
+              </div>
+              <div class="right-fields">
+                <mat-form-field>
+                  <mat-label>Mac Address</mat-label>
+                  <input matInput placeholder="" required />
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Running Device</mat-label>
+                  <input matInput placeholder=""  />
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>OS detail</mat-label>
+                  <input matInput placeholder=""  />
+                </mat-form-field>
+              </div>
           </div>
-          <div class="nmap-scan-btns">
-            <button
-              mat-raised-button
-              color="primary"
-              style="width: 150px;"
-              (click)="normalScan();"
-            >
-              Normal Scan
-            </button>
-            <button
-              mat-raised-button
-              color="primary"
-              style="width: 150px;"
-              (click)=" advanceScan();"
-            >
-              Advance Scan
-            </button>
-          </div>
-        </div>
-      </div>
+          <div class="form-btn">
 
-      <div *ngIf="showModel()" class="model-content">
-        <div class="model-output">
-          <p>Model output will be displayed here.</p>
-        </div>
-        <div class="nmap-scan-btns">
-          <button mat-raised-button color="primary" style="width: 150px;">
-            Model Detection
-          </button>
-        </div>
-      </div>
-      <div class="manual-content" *ngIf="showManual()">
-        <div class="input-field-container">
-          <mat-form-field appearance="fill">
-            <mat-label>Enter Details</mat-label>
-            <textarea matInput style="height: 350px;"></textarea>
-          </mat-form-field>
-          <div class="manual-btn">
-            <button mat-raised-button color="primary" style="width: 150px;">
-              Add
+            <button mat-raised-button color="primary">Add</button>
+            <button mat-button color="warn" type="button" (click)="toggleForm()">
+              Cancel
             </button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Device Add Form -->
+
+    <!-- Add Device Form -->
   `,
-    styles: `
+  styles: `
+  @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+
+.material-symbols-outlined {
+  transform:scale(2);
+
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
   button{
     margin:2px;
     width:200px;
@@ -138,10 +119,13 @@ import { AdvanceScanComponent } from "../../api/advance-scan/advance-scan.compon
   .operational-buttons{
     display:flex;
     flex-direction:row;
+    justify-content:center;
+    align-items:center;
   }
 
   .main-section {
   display: flex;
+  height:80vh;
   flex-direction: column; /* This will stack the buttons and the form vertically */
 }
 
@@ -178,22 +162,9 @@ import { AdvanceScanComponent } from "../../api/advance-scan/advance-scan.compon
   justify-content:center;
   align-items:center;
   width:100%;
-  padding:2%
-
-}
-.nmap-output{
-  background-color:#F5F5F5;
-  width:70%;
   padding:2%;
-  height:80%;
-  margin:auto;
-  border-radius:2%;
-  display: flex;
-  justify-content: center;
-  align-items: center; 
-  border:1px solid #DEDEDE;
-}
 
+}
 .model-output{
   background-color:#F5F5F5;
   width:100%;
@@ -263,25 +234,85 @@ textarea {
   background-color: rgba(0, 0, 0, 0.2)
 }
 
+.add-device-btn{
+  border:0px;
+  border-radius:100%;
+  width:fit-content;
+  font-size:30px;
+  margin-left:25%;
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg) ;
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.add-device-btn:hover{
+  animation: spin 0.5s ease-in-out forwards;
+  cursor:pointer;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: grey;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.add-device-form{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+.form-fields{
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items:center;
+  >.left-fields{
+    margin:10px;
+    width:40%;
+  }
+  >.right-fields{
+    margin:10px;
+    width:40%;
+  }
+}
+.form-btn{
+  >button{
+    margin:10px;
+  }
+}
   `,
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ScanDataComponent,
-        AdvanceScanComponent
-    ]
 })
 export class ScanComponent {
-  showManual = signal(false);
-  showNmap = signal(false);
-  showModel = signal(false);
   progress_spiral = signal(false);
   otherNmapOptions = signal(false);
-  nmapScanData:any;
-  normalScanApi = signal(false)
-  advanceScanApi = signal(false)
+  nmapScanData: any;
+  normalScanApi = signal(false);
+  advanceScanApi = signal(false);
+  showForm = false;
+  addDeviceForm: FormGroup;
+
   anyapi = computed(() => {
     if (this.normalScanApi() || this.advanceScanApi()) {
       return true;
@@ -290,35 +321,39 @@ export class ScanComponent {
     }
   });
 
-  normalScan(){
-    this.normalScanApi.set(true)
-    this.advanceScanApi.set(false)
-  }
-  
-  advanceScan(){
-    this.normalScanApi.set(false)
-    this.advanceScanApi.set(true)
+  normalScan() {
+    this.normalScanApi.set(true);
+    this.advanceScanApi.set(false);
   }
 
-  toggleVisibility(state: any) {
-    if (state === this.showManual) {
-      this.showManual.set(!this.showManual());
-      this.showModel.set(false);
-      this.showNmap.set(false);
-      this.otherNmapOptions.set(false);
-    } else if (state === this.showModel) {
-      this.showModel.set(!this.showModel());
-      this.showManual.set(false);
-      this.showNmap.set(false);
-      this.otherNmapOptions.set(false);
-    } else if (state === this.showNmap) {
-      this.showNmap.set(!this.showNmap());
-      this.showManual.set(false);
-      this.showModel.set(false);
-      this.otherNmapOptions.set(false);
+  advanceScan() {
+    this.normalScanApi.set(false);
+    this.advanceScanApi.set(true);
+  }
+
+  constructor(private fb: FormBuilder) {
+    this.addDeviceForm = this.fb.group({
+      ip: ['', Validators.required],
+      mac: ['', Validators.required],
+      runningDevice: [''],
+      osCpe: [''],
+      osDetails: [''],
+      osGuesses: [''],
+    });
+  }
+
+  toggleForm() {
+    this.showForm = !this.showForm;
+  }
+
+  onSubmit() {
+    if (this.addDeviceForm.valid) {
+      const formData = this.addDeviceForm.value;
+      console.log('Form Data:', formData);
+      // Handle form submission logic here (e.g., call an API to save the data)
+      this.toggleForm();
     }
   }
-
 
   // constructor(private scanData:NmapScanDataService){
 
@@ -328,7 +363,6 @@ export class ScanComponent {
   //   })
   // }
   // ngOnInit(): void {
-      
-  // }
 
+  // }
 }
