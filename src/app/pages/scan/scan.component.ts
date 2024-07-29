@@ -322,11 +322,13 @@ export class ScanComponent {
   });
 
   normalScan() {
+    this.showForm = false;
     this.normalScanApi.set(true);
     this.advanceScanApi.set(false);
   }
 
   advanceScan() {
+    this.showForm = false;
     this.normalScanApi.set(false);
     this.advanceScanApi.set(true);
   }
