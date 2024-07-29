@@ -53,19 +53,19 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
           </thead>
           <tbody>
             <tr>
-              <td>IP:</td>
+              <td>IP</td>
               <td>{{ deviceInfo.ip_addresses }}</td>
             </tr>
             <tr>
-              <td>Connected Subnet:</td>
+              <td>Connected Subnet</td>
               <td>{{ deviceInfo.subnet }}</td>
             </tr>
             <tr>
-              <td>Kernal Name:</td>
+              <td>Kernal Name</td>
               <td>{{ deviceInfo.kernel_name }}</td>
             </tr>
             <tr>
-              <td>Device OS:</td>
+              <td>Device OS</td>
               <td>{{ deviceInfo.operating_system }}</td>
             </tr>
           </tbody>
