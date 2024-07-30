@@ -7,6 +7,7 @@ import { AuthGuard } from './auth.guard';
 import { MlModelComponent } from './pages/ml-model/ml-model.component';
 import { OtpComponent } from './pages/otp/otp.component';
 import { OtpGuard } from './otp.guard';
+import { DeviceManagementComponent } from './pages/device-management/device-management.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,11 @@ export const routes: Routes = [
   {
     path: 'ml',
     component: MlModelComponent,
+    canActivate: [AuthGuard] // Protect ml route with AuthGuard
+  },
+  {
+    path: 'device',
+    component: DeviceManagementComponent,
     canActivate: [AuthGuard] // Protect ml route with AuthGuard
   },
   {

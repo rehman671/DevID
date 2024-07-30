@@ -94,6 +94,11 @@ export class CustomSidenavComponent {
       label: 'Machine Learning',
       route: 'ml'
     },
+    {
+      icon: 'computer',
+      label: 'Device Management',
+      route: 'device'
+    },
     
   ])
 

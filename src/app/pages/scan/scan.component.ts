@@ -1,10 +1,11 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ScanDataComponent } from '../../api/scan-data/scan-data.component';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Optional for notifications
 import { AdvanceScanComponent } from '../../api/advance-scan/advance-scan.component';
 import {
   FormBuilder,
@@ -12,6 +13,8 @@ import {
   Validators,
   FormControl,
 } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../enviroments/environment';
 
 @Component({
   selector: 'app-scan',
@@ -53,44 +56,43 @@ import {
           *ngIf="advanceScanApi()"
         ></app-advance-scan>
         <div *ngIf="showForm" class="add-device-form">
-          <div class="form-fields">
-              <div class="left-fields">
-                <mat-form-field>
-                  <mat-label>Device IP</mat-label>
-                  <input matInput placeholder="192.168.0.0" required />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Device Name</mat-label>
-                  <input matInput placeholder="" required/>
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>OsCpe</mat-label>
-                  <input matInput placeholder=""  />
-                </mat-form-field>
-              </div>
-              <div class="right-fields">
-                <mat-form-field>
-                  <mat-label>Mac Address</mat-label>
-                  <input matInput placeholder="" required />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Running Device</mat-label>
-                  <input matInput placeholder=""  />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>OS detail</mat-label>
-                  <input matInput placeholder=""  />
-                </mat-form-field>
-              </div>
-          </div>
-          <div class="form-btn">
-
-            <button mat-raised-button color="primary">Add</button>
-            <button mat-button color="warn" type="button" (click)="toggleForm()">
-              Cancel
-            </button>
-          </div>
-        </div>
+  <form [formGroup]="addDeviceForm" (ngSubmit)="onSubmit()">
+    <div class="form-fields">
+      <div class="left-fields">
+        <mat-form-field>
+          <mat-label>Device IP</mat-label>
+          <input matInput formControlName="ip_address" placeholder="192.168.0.0" required />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Device Name</mat-label>
+          <input matInput formControlName="name" placeholder="" required />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>OsCpe</mat-label>
+          <input matInput formControlName="os_cpe" placeholder="" />
+        </mat-form-field>
+      </div>
+      <div class="right-fields">
+        <mat-form-field>
+          <mat-label>Mac Address</mat-label>
+          <input matInput formControlName="mac_address" placeholder="" required />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Running Device</mat-label>
+          <input matInput formControlName="running_device" placeholder="" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>OS detail</mat-label>
+          <input matInput formControlName="os_details" placeholder="" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-btn">
+      <button mat-raised-button color="primary" type="submit">Add</button>
+      <button mat-button color="warn" type="button" (click)="toggleForm()">Cancel</button>
+    </div>
+  </form>
+</div>
       </div>
     </div>
 
@@ -298,6 +300,10 @@ textarea {
   }
 }
 .form-btn{
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items:center;
   >button{
     margin:10px;
   }
@@ -312,6 +318,9 @@ export class ScanComponent {
   advanceScanApi = signal(false);
   showForm = false;
   addDeviceForm: FormGroup;
+  http = inject(HttpClient);
+  deviceURL = environment.apiUrl + 'api/v1/devices/'
+
 
   anyapi = computed(() => {
     if (this.normalScanApi() || this.advanceScanApi()) {
@@ -333,14 +342,14 @@ export class ScanComponent {
     this.advanceScanApi.set(true);
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
     this.addDeviceForm = this.fb.group({
-      ip: ['', Validators.required],
-      mac: ['', Validators.required],
-      runningDevice: [''],
-      osCpe: [''],
-      osDetails: [''],
-      osGuesses: [''],
+      ip_address: ['', Validators.required],
+      name: ['', Validators.required],
+      os_cpe: [''],
+      mac_address: ['', Validators.required],
+      running_device: [''],
+      os_details: ['']
     });
   }
 
@@ -351,12 +360,43 @@ export class ScanComponent {
   onSubmit() {
     if (this.addDeviceForm.valid) {
       const formData = this.addDeviceForm.value;
-      console.log('Form Data:', formData);
-      // Handle form submission logic here (e.g., call an API to save the data)
-      this.toggleForm();
+      console.log("Form Data:", formData);
+      // Add device logic here
+      this.http.post(this.deviceURL, formData).subscribe(response => {
+        console.log("Device added successfully:", response);
+        this.snackBar.open('Device added successfully!', 'Close', {
+          duration: 3000
+        });
+      });
+      this.showForm = false;
+
+      //     // Optionally, reload or refresh data
+      //     this.fetchExistingDevices();
+      //     this.normalScanData();
+      //     this.toggleForm();
+      //   }, error => {
+      //     console.error("Error adding device:", error);
+      //     this.snackBar.open('Error adding device!', 'Close', {
+      //       duration: 3000
+      //     });
+      //   });
+      // } else {
+      //   this.snackBar.open('Please fill all required fields!', 'Close', {
+      //     duration: 3000
+      //   });
+      // }
     }
   }
-
+  // addDevice(){
+  //   this.http.post(this.deviceURL , {
+  //     "name":row.name,
+  //     "ip_address": row.ip,
+  //     "mac_address":row.mac
+  //   } ).subscribe((response:any)=>{
+  //     console.log("Added Device: " , response)
+  //   })
+  //   window.location.reload();
+  // }
   // constructor(private scanData:NmapScanDataService){
 
   //   scanData.getScans().subscribe((data)=>{
