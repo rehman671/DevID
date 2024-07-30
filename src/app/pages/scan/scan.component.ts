@@ -344,10 +344,10 @@ export class ScanComponent {
 
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
     this.addDeviceForm = this.fb.group({
-      ip_address: ['', Validators.required],
+      ip_address: ['', [Validators.required, Validators.pattern(/^(\d{1,3}\.){3}\d{1,3}$/)]],
       name: ['', Validators.required],
       os_cpe: [''],
-      mac_address: ['', Validators.required],
+      mac_address: ['', [Validators.required, Validators.pattern(/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/)]],
       running_device: [''],
       os_details: ['']
     });
