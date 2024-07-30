@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { environment } from '../../enviroments/environment';
 import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-advance-scan',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatProgressSpinnerModule, MatButtonModule],
   template: `
   <div class="main">
 
@@ -24,6 +25,7 @@ import { Router } from '@angular/router';
           <th>OsCpe</th>
           <th>OS Details</th>
           <th>OS Guesses</th>
+          <th>Action</th>
         </tr>
   </thead>
   <tbody>
@@ -52,7 +54,7 @@ import { Router } from '@angular/router';
 `,
   styles: `
 .main{
-  padding:5px;
+  margin-right:65px;
   display:flex;
   align-items:center;
   justify-content:center;
