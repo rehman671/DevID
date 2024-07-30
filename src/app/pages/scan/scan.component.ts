@@ -31,7 +31,7 @@ import { Router } from '@angular/router';
     AdvanceScanComponent,
   ],
   template: `
-    <h1>Scan</h1>
+    <h1>Network Management</h1>
     <div class="main-section">
       <div class="operational-buttons">
         <button mat-raised-button color="primary" (click)="normalScan()">
@@ -317,7 +317,7 @@ export class ScanComponent {
   nmapScanData: any;
   normalScanApi = signal(false);
   advanceScanApi = signal(false);
-  showForm = false;
+  showForm = true;
   addDeviceForm: FormGroup;
   http = inject(HttpClient);
   deviceURL = environment.apiUrl + 'api/v1/devices/'
@@ -348,10 +348,10 @@ export class ScanComponent {
 
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
     this.addDeviceForm = this.fb.group({
-      ip_address: ['', Validators.required],
+      ip_address: ['', [Validators.required, Validators.pattern(/^(\d{1,3}\.){3}\d{1,3}$/)]],
       name: ['', Validators.required],
       os_cpe: [''],
-      mac_address: ['', Validators.required],
+      mac_address: ['', [Validators.required, Validators.pattern(/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/)]],
       running_device: [''],
       os_details: ['']
     });

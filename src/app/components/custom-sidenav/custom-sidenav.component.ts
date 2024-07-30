@@ -81,17 +81,17 @@ export class CustomSidenavComponent {
   menuItems = signal<MenuItem[]>([
     {
       icon: 'dashboard',
-      label: 'Dashboard',
+      label: 'Home',
       route: 'dashboard'
     },
     {
       icon: 'network_wifi',
-      label: 'Scan',
+      label: 'Network',
       route: 'scan'
     },
     {
       icon: 'dvr',
-      label: 'Machine Learning',
+      label: 'IoT Devices',
       route: 'ml'
     },
     {
