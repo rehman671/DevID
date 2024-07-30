@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { environment } from '../../enviroments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 
 
 
@@ -39,7 +40,7 @@ import { Router } from '@angular/router';
           <td>{{ row.os_cpe }}</td>
           <td>{{ row.running_device }}</td>
           <td>{{ row.os_guesses }}</td>
-          <td><button mat-button color="warn" type="button" (click)="onDelete(row)">
+          <td><button mat-button color="warn" type="button" (click)="onDelete(row, true)">
               Delete
             </button></td>
         </tr>
@@ -91,6 +92,7 @@ export class DeviceManagementComponent {
   gotData = signal(false)
   disable_btn = signal(false)
   scanData: any = [];
+  router = inject(Router);
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -107,13 +109,13 @@ export class DeviceManagementComponent {
     this.gotData.set(true)
   }
 
-
-  onDelete(row: any) {
+  onDelete(row: any, again: boolean) {
     this.http.delete(this.deviceURL + row.id + "/").subscribe((response: any) => {
       console.log("Device deleted ", response)
     });
-    window.location.reload();
-
+    setTimeout(() => {
+      this.fetchExistingDevices();
+    }, 2000);
   }
   reDeployContract() {
     this.http.post(this.url, {}).subscribe((scanData: any) => {
