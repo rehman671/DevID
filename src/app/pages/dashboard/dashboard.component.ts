@@ -65,7 +65,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
               <td>{{ deviceInfo.operating_system }}</td>
             </tr>
             <tr>
-              <td>Kernal Name</td>
+              <td>Kernel Name</td>
               <td>{{ deviceInfo.kernel_name }}</td>
             </tr>
           </tbody>
