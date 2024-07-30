@@ -30,7 +30,7 @@ import { environment } from '../../enviroments/environment';
     AdvanceScanComponent,
   ],
   template: `
-    <h1>Scan</h1>
+    <h1>Network Management</h1>
     <div class="main-section">
       <div class="operational-buttons">
         <button mat-raised-button color="primary" (click)="normalScan()">
@@ -316,7 +316,7 @@ export class ScanComponent {
   nmapScanData: any;
   normalScanApi = signal(false);
   advanceScanApi = signal(false);
-  showForm = false;
+  showForm = true;
   addDeviceForm: FormGroup;
   http = inject(HttpClient);
   deviceURL = environment.apiUrl + 'api/v1/devices/'

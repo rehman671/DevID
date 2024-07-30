@@ -70,32 +70,11 @@ export class ScanDataComponent implements OnInit {
 
   normalScanData() {
     console.log("Fetch Data called");
-    // this.http.get(this.url).subscribe((scanData: any) => {
-    //   console.log(scanData);
-    //   this.scanData = scanData.output;
-    //   this.gotData.set(true);
-    // });
-    this.scanData = [
-      {
-        "id": 1,
-        "ip": "192.168.222.1",
-        "mac": "00:50:56:C0:00:08",
-        "name": "VMware"
-      },
-      {
-        "id": 2,
-        "ip": "192.168.222.2",
-        "mac": "00:50:56:E5:8B:D8",
-        "name": "VMware"
-      },
-      {
-        "id": 3,
-        "ip": "192.168.222.254",
-        "mac": "00:50:56:EA:59:5C",
-        "name": "VMware"
-      }
-    ];
-    this.gotData.set(true);
+    this.http.get(this.url).subscribe((scanData: any) => {
+      console.log(scanData);
+      this.scanData = scanData.output;
+      this.gotData.set(true);
+    });
   }
   fetchExistingDevices() {
     this.http.get(this.deviceURL).subscribe((response: any) => {

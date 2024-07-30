@@ -26,7 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         Dashboard
       </h1>
     </div>
-    <div class="other-btns-container">
+    <!-- <div class="other-btns-container">
       <button mat-stroked-button color="primary">Apply</button>
       <mat-form-field class="date-filter">
         <mat-label>Add date filter</mat-label>
@@ -36,7 +36,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         </mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-    </div>
+    </div> -->
   </div>
   <div class="mid-section">
     <div class="piechart">
