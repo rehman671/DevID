@@ -71,7 +71,7 @@ export class TokenService {
 
   startTokenRefresh(): void {
     // Refresh the token every hour (3600000 milliseconds)
-    interval(3600).pipe(
+    interval(300000).pipe(
       switchMap(() => this.refreshToken())
     ).subscribe({
       next: () => console.log('Token refreshed successfully'),

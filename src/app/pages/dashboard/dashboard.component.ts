@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { PieChartComponent } from './../../graph/piechart/piechart.component';
 import { LinechartComponent } from '../../graph/linechart/linechart.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,14 +8,15 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule, matDatepickerAnimations} from '@angular/material/datepicker';
 import { MatIconModule} from '@angular/material/icon';
 import { provideNativeDateAdapter } from '@angular/material/core';
-
-
+import { environment } from '../../enviroments/environment';
+import { HttpClient } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule , PieChartComponent , MatButtonModule , LinechartComponent , MatFormFieldModule , MatInputModule , MatDatepickerModule , MatIconModule],
+  imports: [CommonModule , PieChartComponent , MatButtonModule , LinechartComponent , MatFormFieldModule , MatInputModule , MatDatepickerModule , MatIconModule , MatProgressSpinnerModule],
   providers: [provideNativeDateAdapter()],
 
   template: `
@@ -41,29 +42,31 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     <div class="piechart">
       <app-piechart></app-piechart>
     </div>
-    <div class="current-profile">
-        <table>
+    
+    <div  class="current-profile">
+      <mat-spinner *ngIf="!gotData()" class="spinner"></mat-spinner>
+        <table *ngIf="gotData()">
           <thead>
             <tr>
-              <th colspan="2">Current Device</th>
+              <th colspan="2">Host Device</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>IP:</td>
-              <td>192.168.1.100</td>
+              <td>IP</td>
+              <td>{{ deviceInfo.ip_addresses }}</td>
             </tr>
             <tr>
-              <td>Connected Subnet:</td>
-              <td>192.168.1.0/24</td>
+              <td>Connected Subnet</td>
+              <td>{{ deviceInfo.subnet }}</td>
             </tr>
             <tr>
-              <td>Device Type:</td>
-              <td>Desktop</td>
+              <td>Device OS</td>
+              <td>{{ deviceInfo.operating_system }}</td>
             </tr>
             <tr>
-              <td>Device OS:</td>
-              <td>Windows 10</td>
+              <td>Kernal Name</td>
+              <td>{{ deviceInfo.kernel_name }}</td>
             </tr>
           </tbody>
         </table>
@@ -193,6 +196,26 @@ import { provideNativeDateAdapter } from '@angular/material/core';
   }
   `
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
+  url = environment.apiUrl + "api/v1/scan/current/"
+  http = inject(HttpClient)
+  gotData = signal(false)
+  deviceInfo: any = [];
+
+  ngOnInit(): void {
+    this.currentDeviceInfo();
+  }
+
+  currentDeviceInfo(){
+    console.log("get current device info")
+    this.http.get(this.url).subscribe((deviceInfo:any)=>{
+      console.log(deviceInfo)
+      this.deviceInfo = deviceInfo.data
+      this.gotData.set(true)
+    })
+  }
+
+
+
 
 }
