@@ -98,6 +98,7 @@ export class ScanDataComponent implements OnInit {
     ];
     this.gotData.set(true);
   }
+  
   fetchExistingDevices() {
     this.http.get(this.deviceURL).subscribe((response: any) => {
       console.log("Fetched response:", response);

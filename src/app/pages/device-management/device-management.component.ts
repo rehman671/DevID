@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-device-management',
   standalone: true,
-  imports: [MatButtonModule , MatProgressSpinnerModule , CommonModule],
+  imports: [MatButtonModule, MatProgressSpinnerModule, CommonModule],
   template: `
     <h1>Device Management</h1>
     <div class="main-section">
@@ -93,8 +93,9 @@ export class DeviceManagementComponent {
   scanData: any = [];
 
   ngOnInit(): void {
-    this.fetchExistingDevices();
-
+    setTimeout(() => {
+      this.fetchExistingDevices();
+    }, 3000);
   }
 
   fetchExistingDevices() {
@@ -106,10 +107,10 @@ export class DeviceManagementComponent {
     this.gotData.set(true)
   }
 
-  
+
   onDelete(row: any) {
-    this.http.delete(this.deviceURL + row.id + "/").subscribe((response:any)=>{
-      console.log("Device deleted " , response)
+    this.http.delete(this.deviceURL + row.id + "/").subscribe((response: any) => {
+      console.log("Device deleted ", response)
     });
     window.location.reload();
 

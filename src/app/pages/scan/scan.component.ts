@@ -15,6 +15,7 @@ import {
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../enviroments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-scan',
@@ -320,6 +321,9 @@ export class ScanComponent {
   addDeviceForm: FormGroup;
   http = inject(HttpClient);
   deviceURL = environment.apiUrl + 'api/v1/devices/'
+  existingMacs: string[] = [];
+  router = inject(Router);
+
 
 
   anyapi = computed(() => {
@@ -357,8 +361,32 @@ export class ScanComponent {
     this.showForm = !this.showForm;
   }
 
+fetchExistingDevices() {
+  this.http.get(this.deviceURL).subscribe((response: any) => {
+    console.log("Fetched response:", response);
+    
+    // Access the 'devices' array from the response
+    if (response && response.devices && Array.isArray(response.devices)) {
+      this.existingMacs = response.devices.map((device: any) => device.mac_address);
+    } else {
+      console.error("Unexpected response format:", response);
+    }
+  }, error => {
+    console.error("Error fetching devices:", error);
+  });
+};
+
+  isMacExisting(mac: string): boolean {
+    return this.existingMacs.includes(mac);
+  }
+
   onSubmit() {
-    if (this.addDeviceForm.valid) {
+    if (this.isMacExisting(this.addDeviceForm.value.mac_address)){
+      this.snackBar.open("Mac Address already exists!", 'Close', {
+        duration: 3000
+      });
+    }
+    else if (this.addDeviceForm.valid) {
       const formData = this.addDeviceForm.value;
       console.log("Form Data:", formData);
       // Add device logic here
@@ -369,22 +397,8 @@ export class ScanComponent {
         });
       });
       this.showForm = false;
+      this.router.navigate(['device']); 
 
-      //     // Optionally, reload or refresh data
-      //     this.fetchExistingDevices();
-      //     this.normalScanData();
-      //     this.toggleForm();
-      //   }, error => {
-      //     console.error("Error adding device:", error);
-      //     this.snackBar.open('Error adding device!', 'Close', {
-      //       duration: 3000
-      //     });
-      //   });
-      // } else {
-      //   this.snackBar.open('Please fill all required fields!', 'Close', {
-      //     duration: 3000
-      //   });
-      // }
     }
   }
   // addDevice(){
