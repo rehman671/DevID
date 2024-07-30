@@ -62,6 +62,7 @@ export class ScanDataComponent implements OnInit {
   gotData = signal(false);
   scanData: any = [];
   existingMacs: string[] = [];
+  router = inject(Router);
 
   ngOnInit(): void {
     this.fetchExistingDevices();
@@ -117,6 +118,7 @@ export class ScanDataComponent implements OnInit {
   }
 
   onAdd(row: any) {
+    this.router.navigate(['device']); // Adjust the route as per your routing setup
     this.http.post(this.deviceURL , {
       "name":row.name,
       "ip_address": row.ip,
@@ -124,7 +126,6 @@ export class ScanDataComponent implements OnInit {
     } ).subscribe((response:any)=>{
       console.log("Added Device: " , response)
     })
-    window.location.reload();
 
   }
 }

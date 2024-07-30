@@ -3,6 +3,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { environment } from '../../enviroments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-advance-scan',
@@ -69,7 +70,7 @@ export class AdvanceScanComponent implements OnInit {
   scanData: any = [];
   gotData = signal(false)
   existingMacs: string[] = [];
-
+  router = inject(Router);
 
   ngOnInit(): void {
     this.fetchExistingDevices();
@@ -118,7 +119,7 @@ export class AdvanceScanComponent implements OnInit {
     }).subscribe((response: any) => {
       console.log("Added Device: ", response)
     })
-    window.location.reload();
+    this.router.navigate(['device']); // Adjust the route as per your routing setup
 
   }
 }
