@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { CustomSidenavComponent } from './components/custom-sidenav/custom-sidenav.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
@@ -15,7 +16,7 @@ import { TokenService } from './services/token.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, CustomSidenavComponent,ToastrModule],
+  imports: [CommonModule, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, CustomSidenavComponent,ToastrModule, NgApexchartsModule],
   template: `
     <router-outlet  *ngIf="isLoginPage()" ></router-outlet>
   <mat-toolbar  *ngIf="!isLoginPage()" class="mat-elevation-z3">

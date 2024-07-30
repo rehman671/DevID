@@ -1,0 +1,19 @@
+<button (click)="loadChartData()" class="styled-button">
+  {{ isChartVisible ? 'Hide' : 'View IoT Devices' }}
+</button>
+
+<button (click)="loadChartData2()" class="styled-button">
+  {{ isChartVisible2 ? 'Hide' : 'View IoT Devices Classification' }}
+</button>
+
+<div class="center-container">
+  <div *ngIf="isChartVisible" class="chartContainer">
+    <apx-chart [series]="chartSeries" [chart]="chartDetails" [labels]="chartLabels" [title]="chartTitle"
+      [dataLabels]="chartDataLabels"></apx-chart>
+  </div>
+
+  <div *ngIf="isChartVisible2" class="chartContainer">
+    <apx-chart [series]="chartSeries2" [chart]="chartDetails2" [labels]="chartLabels2" [title]="chartTitle2"
+      [dataLabels]="chartDataLabels2"></apx-chart>
+  </div>
+</div>

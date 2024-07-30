@@ -7,9 +7,9 @@ import { ScanDataComponent } from "../../api/scan-data/scan-data.component";
 import { AdvanceScanComponent } from "../../api/advance-scan/advance-scan.component";
 
 @Component({
-    selector: 'app-scan',
-    standalone: true,
-    template: `
+  selector: 'app-scan',
+  standalone: true,
+  template: `
     <h1>Scan</h1>
     <div class="main-section">
       <div class="operational-buttons">
@@ -129,7 +129,7 @@ import { AdvanceScanComponent } from "../../api/advance-scan/advance-scan.compon
       </div>
     </div>
   `,
-    styles: `
+  styles: `
   button{
     margin:2px;
     width:200px;
@@ -264,14 +264,14 @@ textarea {
 }
 
   `,
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ScanDataComponent,
-        AdvanceScanComponent
-    ]
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ScanDataComponent,
+    AdvanceScanComponent
+  ]
 })
 export class ScanComponent {
   showManual = signal(false);
@@ -279,7 +279,7 @@ export class ScanComponent {
   showModel = signal(false);
   progress_spiral = signal(false);
   otherNmapOptions = signal(false);
-  nmapScanData:any;
+  nmapScanData: any;
   normalScanApi = signal(false)
   advanceScanApi = signal(false)
   anyapi = computed(() => {
@@ -290,12 +290,12 @@ export class ScanComponent {
     }
   });
 
-  normalScan(){
+  normalScan() {
     this.normalScanApi.set(true)
     this.advanceScanApi.set(false)
   }
-  
-  advanceScan(){
+
+  advanceScan() {
     this.normalScanApi.set(false)
     this.advanceScanApi.set(true)
   }
@@ -328,7 +328,7 @@ export class ScanComponent {
   //   })
   // }
   // ngOnInit(): void {
-      
+
   // }
 
 }
